@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCRRS - Cyber Crime Report and Resolution System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="app-header">
+        <div class="brand">
+            <div class="shield-icon">🛡️</div>
+            <div>
+                <h1>CCRRS COMMAND CENTER</h1>
+                <p class="subtitle">Cyber Crime Report & Resolution System | National Investigative Platform</p>
+            </div>
+        </div>
+        <div class="header-stats">
+            <div class="stat-badge">
+                <span class="stat-label">TOTAL CASES</span>
+                <span class="stat-value" id="hdrTotalCases">0</span>
+            </div>
+            <div class="stat-badge alert">
+                <span class="stat-label">DISPATCH QUEUE</span>
+                <span class="stat-value" id="hdrQueueSize">0</span>
+            </div>
+            <div class="stat-badge success">
+                <span class="stat-label">FINANCIAL DAMAGES</span>
+                <span class="stat-value" id="hdrTotalLoss">₹0</span>
+            </div>
+            <div class="status-indicator">
+                <span class="dot live"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Layout -->
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="overview">
+                    <span class="nav-icon">📊</span> Intelligence Overview
+                </button>
+                <button class="nav-btn" data-tab="register">
+                    <span class="nav-icon">📝</span> File Cyber Complaint
+                </button>
+                <button class="nav-btn" data-tab="ledger">
+                    <span class="nav-icon">📋</span> Case Docket & Queue
+                </button>
+                <button class="nav-btn" data-tab="tree">
+                    <span class="nav-icon">🗂️</span> Crime Classification & Routing
+                </button>
+                <button class="nav-btn" data-tab="graph">
+                    <span class="nav-icon">🕸️</span> Syndicate Link Analysis
+                </button>
+                <button class="nav-btn" data-tab="searchsort">
+                    <span class="nav-icon">⚡</span> Case Search & Priority Triage
+                </button>
+                <button class="nav-btn" data-tab="decisions">
+                    <span class="nav-icon">🎯</span> Resource & Ops Planning
+                </button>
+            </nav>
+
+            <div class="dsa-legend">
+                <h4>UNDERLYING ARCHITECTURE</h4>
+                <ul>
+                    <li><span class="tag tag-ll">Linked List</span> Central Docket</li>
+                    <li><span class="tag tag-queue">Queue FIFO</span> Triage Dispatch</li>
+                    <li><span class="tag tag-stack">Stack LIFO</span> Status Rollback</li>
+                    <li><span class="tag tag-tree">Binary Tree</span> Offence Taxonomy</li>
+                    <li><span class="tag tag-bst">BST Index</span> O(log n) Lookup</li>
+                    <li><span class="tag tag-graph">Graph</span> Syndicate Ring Tracing</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content View -->
+        <main class="content-area">
+
+            <!-- TAB 1: OVERVIEW -->
+            <section id="tab-overview" class="tab-pane active">
+                <div class="section-header">
+                    <h2>Investigative Intelligence Overview</h2>
+                    <p>Real-time cyber incident telemetry, jurisdiction distribution, and case resolution tracking</p>
+                </div>
+
+                <div class="grid-cards">
+                    <div class="card metric-card">
+                        <div class="metric-title">Active Case Register</div>
+                        <div class="metric-num" id="metricActiveList">6</div>
+                        <div class="metric-desc">Verified complaints tracked across ongoing investigations</div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-title">Dispatch & Triage Queue</div>
+                        <div class="metric-num" id="metricQueueDepth">6</div>
+                        <div class="metric-desc">Pending assignment in fair arrival sequence</div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-title">Direct Lookup Index</div>
+                        <div class="metric-num" id="metricBstNodes">6</div>
+                        <div class="metric-desc">Indexed Case IDs for logarithmic fast retrieval</div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-title">Correlated Syndicate Entities</div>
+                        <div class="metric-num" id="metricGraphNodes">11</div>
+                        <div class="metric-desc">Suspect profiles, IMEI devices, proxies & mule accounts</div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <h3>Recent High-Priority Cyber Incidents</h3>
+                    <div class="table-container">
+                        <table class="data-table" id="recentCasesTable">
+                            <thead>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Complainant</th>
+                                    <th>Offence Category</th>
+                                    <th>Severity</th>
+                                    <th>Financial Loss</th>
+                                    <th>Urgency Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Populated via JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: CITIZEN INTAKE -->
+            <section id="tab-register" class="tab-pane">
+                <div class="section-header">
+                    <h2>Citizen Cybercrime Complaint Intake</h2>
+                    <p>Digital registration portal with real-time risk assessment and automated priority indexing</p>
+                </div>
+
+                <div class="split-view">
+                    <div class="card form-card">
+                        <form id="complaintForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Complainant Full Name *</label>
+                                    <input type="text" id="complainantName" placeholder="e.g., Alok Kumar" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Phone *</label>
+                                    <input type="text" id="phone" placeholder="+91 98XXXXXXXX" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="email" placeholder="citizen@domain.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Incident Location (City) *</label>
+                                    <input type="text" id="city" placeholder="e.g., Delhi, Bengaluru, Mumbai" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Offence Category *</label>
+                                <select id="category" required>
+                                    <option value="UPI & Banking Fraud">UPI & Banking Fraud</option>
+                                    <option value="Phishing & Identity Theft">Phishing & Identity Theft</option>
+                                    <option value="Hacking & Ransomware">Hacking & Ransomware</option>
+                                    <option value="Cyber Harassment & Defamation">Cyber Harassment & Defamation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Incident Description & Evidence References *</label>
+                                <textarea id="description" rows="3" placeholder="Provide transaction IDs, suspicious URLs, fraudulent phone numbers, or account details..." required></textarea>
+                            </div>
+
+                            <div class="form-row sliders-row">
+                                <div class="form-group">
+                                    <label>Declared Severity: <span id="valSeverity" class="slider-val">7</span>/10</label>
+                                    <input type="range" id="severity" min="1" max="10" value="7">
+                                </div>
+                                <div class="form-group">
+                                    <label>Affected Victims: <span id="valVictims" class="slider-val">1</span></label>
+                                    <input type="range" id="victimCount" min="1" max="50" value="1">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Financial Damage (INR): ₹<span id="valLoss">75,000</span></label>
+                                <input type="number" id="financialLoss" value="75000" min="0" step="5000">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                🚀 Submit Complaint & Enqueue for Investigation
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Live Priority Risk Engine -->
+                    <div class="card preview-card">
+                        <h3>Automated Threat Assessment Engine</h3>
+                        <p class="text-muted">Calculates case triage weight based on severity, damage, and victim impact</p>
+
+                        <div class="priority-meter-box">
+                            <div class="meter-circle">
+                                <span class="meter-number" id="livePriority">0.0</span>
+                                <span class="meter-sub">PRIORITY</span>
+                            </div>
+                            <div class="urgency-badge" id="urgencyBadge">HIGH URGENCY</div>
+                        </div>
+
+                        <div class="formula-breakdown">
+                            <h4>Threat Evaluation Formula:</h4>
+                            <code>(Severity × 3) + (Normalized Damage × 4) + (Victims × 2)</code>
+                            <div class="token-flow mt-2" id="postfixTokenFlow">
+                                <!-- Tokens -->
+                            </div>
+                        </div>
+
+                        <div class="pipeline-status mt-3">
+                            <h4>Automated Processing Stages:</h4>
+                            <ul>
+                                <li>✓ Appended to Central Case Register</li>
+                                <li>✓ Case ID Keyed into Fast Search Index</li>
+                                <li>✓ Queued into Dispatch Docket</li>
+                                <li>✓ Classified under Offence Taxonomy</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: CASE DOCKET & QUEUE -->
+            <section id="tab-ledger" class="tab-pane">
+                <div class="section-header">
+                    <h2>Case Docket & Investigation Queue</h2>
+                    <p>Central investigation register, FIFO intake order, and audit rollback history</p>
+                </div>
+
+                <div class="queue-control-bar card">
+                    <div class="queue-info">
+                        <h3>Investigation Dispatch Queue: <span id="queueCounter" class="highlight">0 Cases Waiting</span></h3>
+                        <p>Cases are prioritized in strict arrival order ensuring fair and transparent allocation</p>
+                    </div>
+                    <button class="btn btn-warning" id="btnDequeue">
+                        ⚡ Dequeue & Assign Next Case
+                    </button>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header-flex">
+                        <h3>Central Cybercrime Complaint Docket</h3>
+                        <button class="btn btn-secondary btn-sm" id="btnRefreshLedger">🔄 Refresh</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="ledgerTable">
+                            <thead>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Complainant</th>
+                                    <th>Location</th>
+                                    <th>Category</th>
+                                    <th>Priority Score</th>
+                                    <th>Damage</th>
+                                    <th>Investigation Status</th>
+                                    <th>Audit History</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Populated via JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CRIME TAXONOMY & ROUTING -->
+            <section id="tab-tree" class="tab-pane">
+                <div class="section-header">
+                    <h2>Crime Classification & Jurisdiction Routing</h2>
+                    <p>Hierarchical offence classification structure, damage aggregation, and specialized cell routing</p>
+                </div>
+
+                <div class="card">
+                    <div class="traversal-buttons">
+                        <button class="btn btn-sm btn-outline active" data-trav="preorder">Top-Down Hierarchy (Preorder)</button>
+                        <button class="btn btn-sm btn-outline" data-trav="inorder">Classified Index (Inorder)</button>
+                        <button class="btn btn-sm btn-outline" data-trav="postorder">Damage Summary Rollup (Postorder)</button>
+                    </div>
+                    <div class="traversal-display mt-2" id="traversalResult">
+                        <!-- Traversal sequence badges -->
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <h3>Hierarchical Cybercrime Routing Map</h3>
+                    <div class="tree-visualizer" id="treeVisualContainer">
+                        <!-- Rendered Interactive Tree -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: SYNDICATE LINK ANALYSIS -->
+            <section id="tab-graph" class="tab-pane">
+                <div class="section-header">
+                    <h2>Syndicate Link Analysis & Evidence Correlation</h2>
+                    <p>Uncovering cross-complaint connections between suspects, devices, IP proxies, and financial mule accounts</p>
+                </div>
+
+                <div class="graph-toolbar card">
+                    <div class="graph-tool-group">
+                        <label>Fraud Ring Detection:</label>
+                        <select id="bfsStartNode" class="select-inline"></select>
+                        <input type="number" id="bfsHops" value="2" min="1" max="4" style="width: 60px;" class="input-inline">
+                        <button class="btn btn-primary btn-sm" id="btnRunBFS">🔍 Trace Connected Ring</button>
+                    </div>
+                    <div class="graph-tool-group">
+                        <label>Evidence Trail Tracer:</label>
+                        <select id="dfsFromNode" class="select-inline"></select>
+                        <span>→</span>
+                        <select id="dfsToNode" class="select-inline"></select>
+                        <button class="btn btn-secondary btn-sm" id="btnRunDFS">🔗 Trace Evidence Chain</button>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnResetGraph">Reset View</button>
+                </div>
+
+                <div class="card graph-canvas-card mt-2">
+                    <div class="canvas-header">
+                        <span id="graphStatusMessage">Drag entities to explore network linkages and co-occurrence in complaints</span>
+                        <div class="node-legend">
+                            <span class="legend-item"><span class="legend-dot dot-suspect"></span> Suspect</span>
+                            <span class="legend-item"><span class="legend-dot dot-device"></span> Device IMEI</span>
+                            <span class="legend-item"><span class="legend-dot dot-ip"></span> IP Proxy</span>
+                            <span class="legend-item"><span class="legend-dot dot-bank"></span> Mule Account</span>
+                            <span class="legend-item"><span class="legend-dot dot-phone"></span> Burner SIM</span>
+                        </div>
+                    </div>
+                    <canvas id="networkCanvas" width="960" height="520"></canvas>
+                    <div id="graphOutputConsole" class="graph-console mt-2"></div>
+                </div>
+            </section>
+
+            <!-- TAB 6: SEARCH & PRIORITY TRIAGE -->
+            <section id="tab-searchsort" class="tab-pane">
+                <div class="section-header">
+                    <h2>Case Search & Priority Triage Center</h2>
+                    <p>Direct case indexing, keyword discovery, and real-time urgency prioritization</p>
+                </div>
+
+                <div class="card">
+                    <div class="search-bar-flex">
+                        <input type="text" id="searchInput" placeholder="Search by Case ID (e.g. CCRRS-1002) or keywords (Anita, Delhi, WhatsApp)...">
+                        <div class="search-options">
+                            <label><input type="radio" name="searchType" value="bst" checked> Indexed Case ID Search</label>
+                            <label><input type="radio" name="searchType" value="binary"> Ordered ID Search</label>
+                            <label><input type="radio" name="searchType" value="linear"> Full-Text Search</label>
+                        </div>
+                        <button class="btn btn-primary" id="btnExecuteSearch">🔎 Search Docket</button>
+                    </div>
+                    <div id="searchBenchmarkBox" class="benchmark-box mt-2" style="display:none;">
+                        <!-- Time taken display -->
+                    </div>
+                    <div id="searchResultsArea" class="mt-2"></div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header-flex">
+                        <h3>Urgent Incident Triage (Critical First)</h3>
+                        <button class="btn btn-warning" id="btnExecuteQuickSort">⚡ Generate Priority Roster</button>
+                    </div>
+                    <div id="quickSortBenchmark" class="text-muted mb-2"></div>
+                    <div class="table-container">
+                        <table class="data-table" id="sortedCasesTable">
+                            <thead>
+                                <tr>
+                                    <th>Urgency Rank</th>
+                                    <th>Case ID</th>
+                                    <th>Complainant</th>
+                                    <th>Offence Category</th>
+                                    <th>Priority Score</th>
+                                    <th>Financial Loss</th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Populated via JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: RESOURCE & OPS PLANNING -->
+            <section id="tab-decisions" class="tab-pane">
+                <div class="section-header">
+                    <h2>Investigative Operations & Resource Planning</h2>
+                    <p>Automated officer allocation, forensic budget distribution, and multi-evidence suspect shortlisting</p>
+                </div>
+
+                <div class="decision-grid">
+                    <!-- Officer Roster Card -->
+                    <div class="card">
+                        <div class="card-header-flex">
+                            <h3>Officer Duty & Case Assignment Schedule</h3>
+                            <button class="btn btn-sm btn-primary" id="btnRunGreedy">Optimize Duty Roster</button>
+                        </div>
+                        <p class="text-muted">Sequences critical cases to officer duty slots ensuring resolution before statutory deadlines</p>
+                        <div id="greedyScheduleResult" class="mt-2">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Budget Card -->
+                    <div class="card">
+                        <div class="card-header-flex">
+                            <h3>Forensic Investigation Budget Allocation</h3>
+                            <button class="btn btn-sm btn-primary" id="btnRunKnapsack">Optimize Budget</button>
+                        </div>
+                        <p class="text-muted">Selects the optimal subset of cases maximizing recovery value within available funds</p>
+                        <div class="knapsack-slider-group mt-2">
+                            <label>Monthly Forensic Budget: ₹<span id="knapsackBudgetVal">60</span>,000</label>
+                            <input type="range" id="knapsackBudgetInput" min="20" max="150" value="60" step="5">
+                        </div>
+                        <div id="knapsackResult" class="mt-2">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Suspect Shortlisting Card -->
+                    <div class="card card-wide">
+                        <div class="card-header-flex">
+                            <h3>Forensic Suspect Identification Filter</h3>
+                            <button class="btn btn-sm btn-warning" id="btnRunBacktracking">Filter Suspect Pool</button>
+                        </div>
+                        <p class="text-muted">Cross-correlates multi-variable forensic constraints to identify matching suspect syndicates</p>
+                        <div class="filter-row mt-2">
+                            <div>
+                                <label>IP Subnet Range:</label>
+                                <input type="text" id="btSubnet" value="103.21" class="input-sm">
+                            </div>
+                            <div>
+                                <label>Target Device:</label>
+                                <input type="text" id="btDevice" value="Android" class="input-sm">
+                            </div>
+                            <div>
+                                <label>Fraud Modus Operandi:</label>
+                                <input type="text" id="btPattern" value="UPI_SPOOFING" class="input-sm">
+                            </div>
+                            <div>
+                                <label>Minimum Threat Score:</label>
+                                <input type="number" id="btMinRisk" value="75" class="input-sm" style="width: 70px;">
+                            </div>
+                            <div>
+                                <label>Syndicate Cell Size:</label>
+                                <input type="number" id="btSize" value="2" min="1" max="4" class="input-sm" style="width: 60px;">
+                            </div>
+                        </div>
+
+                        <div id="backtrackingResult" class="mt-3">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Status Change & Audit Rollback Modal -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Case Details & Investigation Actions</h3>
+                <button class="modal-close" id="btnCloseModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalCaseSummary" class="modal-summary"></div>
+
+                <div class="modal-actions-box mt-3">
+                    <h4>Update Investigation Status:</h4>
+                    <div class="form-row">
+                        <select id="modalNewStatus">
+                            <option value="UNDER_INVESTIGATION">UNDER_INVESTIGATION</option>
+                            <option value="EVIDENCE_COLLECTED">EVIDENCE_COLLECTED</option>
+                            <option value="RESOLVED">RESOLVED</option>
+                            <option value="CLOSED">CLOSED</option>
+                        </select>
+                        <input type="text" id="modalOfficer" placeholder="Investigating Officer Badge">
+                    </div>
+                    <input type="text" id="modalRemarks" placeholder="Investigation diary entry / evidence notes..." class="mt-2">
+                    <button class="btn btn-primary btn-sm mt-2" id="btnSubmitStatusUpdate">Commit Status Update</button>
+                </div>
+
+                <div class="undo-box mt-3">
+                    <h4>Action Rollback Control:</h4>
+                    <p class="text-muted">Reverts accidental status transitions to the previous recorded milestone.</p>
+                    <button class="btn btn-danger btn-sm" id="btnModalUndo">↩️ Rollback Last Status Transition</button>
+                    <div id="undoFeedback" class="undo-feedback mt-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
